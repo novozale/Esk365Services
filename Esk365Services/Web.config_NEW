@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+
+  <appSettings>
+    <add key="aspnet:UseTaskFriendlySynchronizationContext" value="true"/>
+  </appSettings>
+  <system.web>
+    <compilation debug="true" strict="false" explicit="true" targetFramework="4.5"/>
+    <httpRuntime targetFramework="4.5"/>
+  </system.web>
+  <system.serviceModel>
+    <services>
+      <service behaviorConfiguration="MyBehavior" name="Esk365Services.Esk365Service">
+        <endpoint address="" binding="wsHttpBinding"
+          bindingConfiguration="NewBinding0" name="MyEndPoint" contract="Esk365Services.IEsk365Service" />
+      </service>
+    </services>
+    <behaviors>
+      <serviceBehaviors>
+        <behavior name="MyBehavior">
+          <serviceMetadata httpGetEnabled="true" />
+          <serviceDebug includeExceptionDetailInFaults="true" />
+          <serviceCredentials>
+            <serviceCertificate findValue="localhost" storeName="My" x509FindType="FindBySubjectName" />
+            <userNameAuthentication userNamePasswordValidationMode="Custom"
+              customUserNamePasswordValidatorType="Esk365Services.CustomUserNameValidator, Esk365Services" />
+          </serviceCredentials>
+        </behavior>
+      </serviceBehaviors>
+    </behaviors>
+    <protocolMapping>
+      <add binding="basicHttpsBinding" scheme="https"/>
+    </protocolMapping>
+    <serviceHostingEnvironment aspNetCompatibilityEnabled="true" multipleSiteBindingsEnabled="true"/>
+    <bindings>
+      <wsHttpBinding>
+        <binding name="NewBinding0">
+          <security>
+            <transport clientCredentialType="None" />
+            <message clientCredentialType="UserName" negotiateServiceCredential="false" />
+          </security>
+        </binding>
+      </wsHttpBinding>
+    </bindings>
+
+  </system.serviceModel>
+  <system.webServer>
+    <modules runAllManagedModulesForAllRequests="true"/>
+    <!--
+        Для просмотра корневого каталога веб-приложения во время отладки установите значение true.
+        Перед развертыванием установите значение false, чтобы избежать раскрытия сведений в папке веб-приложения.
+      -->
+    <directoryBrowse enabled="true"/>
+  </system.webServer>
+
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="System.Memory" publicKeyToken="CC7B13FFCD2DDD51" culture="neutral"/>
+        <bindingRedirect oldVersion="0.0.0.0-4.0.1.1" newVersion="4.0.1.1"/>
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+</configuration>
